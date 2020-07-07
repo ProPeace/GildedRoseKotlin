@@ -3,7 +3,7 @@ package com.gildedrose
 class GildedRose(var items: Array<Item>) {
 
     /**
-     * Increment the item's quality by 1
+     * Incremente la qualité de l'item par 1
      */
     private fun incrementItemQuality(i : Int){
         items[i].quality = items[i].quality + 1
