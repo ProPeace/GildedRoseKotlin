@@ -31,9 +31,8 @@ class GildedRoseTest {
     Item("Conjured Mana Cake", 3, 6))
 
     @Test fun normalUpdate() {
-        var expectedItems = arrayOf(Item("+5 Dexterity Vest",9,19))
-
         val items = arrayOf(Item("+5 Dexterity Vest",10,20))
+        val expectedItems = arrayOf(Item("+5 Dexterity Vest",9,19))
 
         updateItems(items)
         assertEquals(items.contentToString(), expectedItems.contentToString())
@@ -46,6 +45,24 @@ class GildedRoseTest {
 
         updateItems(items)
         assertEquals(items.contentToString(), items.contentToString())
+    }
+
+    @Test fun agedBrieUpdate() {
+
+        val items = arrayOf(Item("Aged Brie", 2, 0))
+        val expectedItems = arrayOf(Item("Aged Brie",1,1))
+
+        updateItems(items)
+        assertEquals(items.contentToString(), expectedItems.contentToString())
+    }
+
+    @Test fun nonNegativeUpdate()
+    {
+        val items = arrayOf(Item("+5 Dexterity Vest",0,20))
+        val negativeItems = arrayOf(Item("+5 Dexterity Vest",-1,19))
+
+        updateItems(items)
+        assertNotEquals(items.contentToString(), negativeItems.contentToString())
     }
 }
 
