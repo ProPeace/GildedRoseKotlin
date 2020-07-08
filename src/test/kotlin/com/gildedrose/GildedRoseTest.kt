@@ -5,14 +5,6 @@ import org.junit.Test
 
 class GildedRoseTest {
 
-    /*@Test fun foo() {
-        val items = arrayOf<Item>(Item("foo", 0, 0))
-        val app = GildedRose(items)
-        app.updateQuality()
-        assertEquals("fixme", app.items[0].name)
-
-    }*/
-
     private val items = arrayOf(Item("+5 Dexterity Vest", 10, 20), //
     Item("Aged Brie", 2, 0), //
     Item("Elixir of the Mongoose", 5, 7), //
@@ -65,8 +57,8 @@ class GildedRoseTest {
      */
     @Test fun agedBrieUpdate() {
 
-        val items = arrayOf(Item("Aged Brie", 1, 2))
-        val expectedItems = arrayOf(Item("Aged Brie",0,3))
+        val items = arrayOf(Item("Aged Brie", 1, 2), Item("Aged Brie", 2, 0))
+        val expectedItems = arrayOf(Item("Aged Brie",0,3), Item("Aged Brie", 1, 1))
 
         updateItems(items)
         assertEquals(items.contentToString(), expectedItems.contentToString())
@@ -80,12 +72,12 @@ class GildedRoseTest {
         val items = arrayOf(Item("Backstage passes to a TAFKAL80ETC concert", 15, 20),
                 Item("Backstage passes to a TAFKAL80ETC concert", 10, 20),
                 Item("Backstage passes to a TAFKAL80ETC concert", 5, 20),
-                Item("Backstage passes to a TAFKAL80ETC concert", 0, 20))
+                Item("Backstage passes to a TAFKAL80ETC concert", 0, 0))
 
         val expectedItems = arrayOf(Item("Backstage passes to a TAFKAL80ETC concert", 14, 21),
                 Item("Backstage passes to a TAFKAL80ETC concert", 9, 22),
                 Item("Backstage passes to a TAFKAL80ETC concert", 4, 23),
-                Item("Backstage passes to a TAFKAL80ETC concert", -1, 0))
+                Item("Backstage passes to a TAFKAL80ETC concert", -1, 3))
 
         updateItems(items)
         assertEquals(expectedItems.contentToString(), items.contentToString())
