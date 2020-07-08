@@ -13,8 +13,6 @@ class GildedRoseTest {
 
     }*/
 
-
-
     private val items = arrayOf(Item("+5 Dexterity Vest", 10, 20), //
     Item("Aged Brie", 2, 0), //
     Item("Elixir of the Mongoose", 5, 7), //
@@ -27,8 +25,8 @@ class GildedRoseTest {
     Item("Conjured Mana Cake", 3, 6))
 
     /**
-     * Créé l'objet GildedRose d'une liste d'items et y applique la méthode updateQuality
-     * @param items : la liste des items à mettre à jour
+     * Create an object GildedRose of a list of items add apply updateQuality
+     * @param items : the list of items to update
      */
     private fun updateItems(items: Array<Item>)
     {
@@ -37,7 +35,7 @@ class GildedRoseTest {
     }
 
     /**
-     * Exécute un test sur une liste d'item "normaux"
+     * Execute a test on a "normal" list of items
      */
     @Test fun normalUpdate() {
         val items = arrayOf(Item("+5 Dexterity Vest",10,20))
@@ -48,7 +46,7 @@ class GildedRoseTest {
     }
 
     /**
-     * Exécute un test sur l'item légendaire Sulfuras
+     * Execute a test on the legendary item Sulfuras
      */
     @Test fun sulfurasUpdate() {
 
@@ -60,7 +58,7 @@ class GildedRoseTest {
     }
 
     /**
-     * Exécute un test sur l'item "Aged Brie"
+     * Execute a test on the item "Aged Brie"
      */
     @Test fun agedBrieUpdate() {
 
@@ -72,7 +70,26 @@ class GildedRoseTest {
     }
 
     /**
-     * Exécute un test pour vérifier que la qualité des items ne peut être négative
+     * Execute a test on the items "Backstage passes"
+     */
+    @Test fun backstagePassesUpdate() {
+
+        val items = arrayOf(Item("Backstage passes to a TAFKAL80ETC concert", 15, 20),
+                Item("Backstage passes to a TAFKAL80ETC concert", 10, 20),
+                Item("Backstage passes to a TAFKAL80ETC concert", 5, 20),
+                Item("Backstage passes to a TAFKAL80ETC concert", 0, 20))
+
+        val expectedItems = arrayOf(Item("Backstage passes to a TAFKAL80ETC concert", 14, 21),
+                Item("Backstage passes to a TAFKAL80ETC concert", 9, 22),
+                Item("Backstage passes to a TAFKAL80ETC concert", 4, 23),
+                Item("Backstage passes to a TAFKAL80ETC concert", -1, 0))
+
+        updateItems(items)
+        assertEquals(items.contentToString(), expectedItems.contentToString())
+    }
+
+    /**
+     * Execute a test to check if the quality of the items is never negative
      */
     @Test fun nonNegativeUpdate()
     {
@@ -84,15 +101,17 @@ class GildedRoseTest {
     }
 
     /**
-     * Exécute un test qui vérifie que la qualité des items ne peut dépasser 50
+     * Execute a test to check if the quality of the items is never more than 50
      */
     @Test fun notOver50Update()
     {
-        val items = arrayOf(Item("Aged Brie", 2, 50))
-        val over50Items = arrayOf(Item("Aged Brie", 1, 51))
+        val items = arrayOf(Item("Aged Brie", 2, 50),
+                            Item("Backstage passes to a TAFKAL80ETC concert", 10, 50))
+        val over50Items = arrayOf(Item("Aged Brie", 1, 50),
+                                  Item("Backstage passes to a TAFKAL80ETC concert", 9, 50))
 
         updateItems(items)
-        assertNotEquals(items.contentToString(), over50Items.contentToString())
+        assertEquals(items.contentToString(), over50Items.contentToString())
     }
 }
 
