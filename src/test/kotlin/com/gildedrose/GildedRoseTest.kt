@@ -42,7 +42,7 @@ class GildedRoseTest {
         val expectedItems = arrayOf(Item("+5 Dexterity Vest",9,19))
 
         updateItems(items)
-        assertEquals(items.contentToString(), expectedItems.contentToString())
+        assertEquals(expectedItems.contentToString(), items.contentToString())
     }
 
     /**
@@ -50,11 +50,14 @@ class GildedRoseTest {
      */
     @Test fun sulfurasUpdate() {
 
-        val items = arrayOf(Item("Sulfuras, Hand of Ragnaros", 0, 80), //
-                Item("Sulfuras, Hand of Ragnaros", -1, 80))
+        val items = arrayOf(Item("Sulfuras, Hand of Ragnaros", 0, 80),
+                            Item("Sulfuras, Hand of Ragnaros", -1, 80))
+
+        val expectedItems = arrayOf(Item("Sulfuras, Hand of Ragnaros", 0, 80),
+                            Item("Sulfuras, Hand of Ragnaros", -1, 80))
 
         updateItems(items)
-        assertEquals(items.contentToString(), items.contentToString())
+        assertEquals(items.contentToString(), expectedItems.contentToString())
     }
 
     /**
@@ -62,8 +65,8 @@ class GildedRoseTest {
      */
     @Test fun agedBrieUpdate() {
 
-        val items = arrayOf(Item("Aged Brie", 2, 0))
-        val expectedItems = arrayOf(Item("Aged Brie",1,1))
+        val items = arrayOf(Item("Aged Brie", 1, 2))
+        val expectedItems = arrayOf(Item("Aged Brie",0,3))
 
         updateItems(items)
         assertEquals(items.contentToString(), expectedItems.contentToString())
@@ -85,7 +88,7 @@ class GildedRoseTest {
                 Item("Backstage passes to a TAFKAL80ETC concert", -1, 0))
 
         updateItems(items)
-        assertEquals(items.contentToString(), expectedItems.contentToString())
+        assertEquals(expectedItems.contentToString(), items.contentToString())
     }
 
     /**
@@ -93,11 +96,13 @@ class GildedRoseTest {
      */
     @Test fun nonNegativeUpdate()
     {
-        val items = arrayOf(Item("+5 Dexterity Vest",10,0))
-        val negativeItems = arrayOf(Item("+5 Dexterity Vest",9,-1))
+        val items = arrayOf(Item("+5 Dexterity Vest",10,0),
+                            Item("+5 Dexterity Vest",5,1))
+        val negativeItems = arrayOf(Item("+5 Dexterity Vest",9,0),
+                                    Item("+5 Dexterity Vest",4,0))
 
         updateItems(items)
-        assertNotEquals(items.contentToString(), negativeItems.contentToString())
+        assertEquals(negativeItems.contentToString(), items.contentToString())
     }
 
     /**
@@ -111,7 +116,22 @@ class GildedRoseTest {
                                   Item("Backstage passes to a TAFKAL80ETC concert", 9, 50))
 
         updateItems(items)
-        assertEquals(items.contentToString(), over50Items.contentToString())
+        assertEquals(over50Items.contentToString(), items.contentToString())
+    }
+
+    /**
+     * Execute a test to check if, when the sell by date has passed, Quality degrades twice as fast
+     * Only for "Normals" items & "Aged Brie" (this one increase instead)
+     */
+    @Test fun datePassedUpdate()
+    {
+        val items = arrayOf(Item("+5 Dexterity Vest",0,20),
+                            Item("Aged Brie", 0, 2))
+        val expectedItems = arrayOf(Item("+5 Dexterity Vest",-1,18),
+                                    Item("Aged Brie", -1, 4))
+
+        updateItems(items)
+        assertEquals(expectedItems.contentToString(), items.contentToString())
     }
 }
 
