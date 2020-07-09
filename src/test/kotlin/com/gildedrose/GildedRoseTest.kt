@@ -77,7 +77,7 @@ class GildedRoseTest {
         val expectedItems = arrayOf(Item("Backstage passes to a TAFKAL80ETC concert", 14, 21),
                 Item("Backstage passes to a TAFKAL80ETC concert", 9, 22),
                 Item("Backstage passes to a TAFKAL80ETC concert", 4, 23),
-                Item("Backstage passes to a TAFKAL80ETC concert", -1, 3))
+                Item("Backstage passes to a TAFKAL80ETC concert", -1, 0))
 
         updateItems(items)
         assertEquals(expectedItems.contentToString(), items.contentToString())
