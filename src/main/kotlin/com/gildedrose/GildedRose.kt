@@ -3,63 +3,90 @@ package com.gildedrose
 class GildedRose(var items: Array<Item>) {
 
     /**
-     * Increment the item's quality by 1
+     * Update the quality of a list of items according to their type
      */
-    private fun incrementItemQuality(i : Int){
-        items[i].quality = items[i].quality + 1
-    }
-
     fun updateQuality() {
         for (i in items.indices) {
-            if (items[i].name != "Aged Brie" && items[i].name != "Backstage passes to a TAFKAL80ETC concert") {
-                if (items[i].quality > 0) {
-                    if (items[i].name != "Sulfuras, Hand of Ragnaros") {
-                        items[i].quality = items[i].quality - 1
-                    }
-                }
-            } else {
-                if (items[i].quality < 50) {
-                    items[i].quality = items[i].quality + 1
+            // We start by dealing the case Sulfuras, which sellIn and quality will never change
+            if (items[i].name == "Sulfuras, Hand of Ragnaros") continue
 
-                    if (items[i].name == "Backstage passes to a TAFKAL80ETC concert") {
-                        if (items[i].sellIn < 11) {
-                            if (items[i].quality < 50) {
-                                items[i].quality = items[i].quality + 1
-                            }
-                        }
+            // Then we can decrement the sellIn
+            decreaseItemSellIn(i)
 
-                        if (items[i].sellIn < 6) {
-                            if (items[i].quality < 50) {
-                                items[i].quality = items[i].quality + 1
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (items[i].name != "Sulfuras, Hand of Ragnaros") {
-                items[i].sellIn = items[i].sellIn - 1
-            }
-
-            if (items[i].sellIn < 0) {
-                if (items[i].name != "Aged Brie") {
-                    if (items[i].name != "Backstage passes to a TAFKAL80ETC concert") {
-                        if (items[i].quality > 0) {
-                            if (items[i].name != "Sulfuras, Hand of Ragnaros") {
-                                items[i].quality = items[i].quality - 1
-                            }
-                        }
-                    } else {
-                        items[i].quality = items[i].quality - items[i].quality
-                    }
-                } else {
-                    if (items[i].quality < 50) {
-                        items[i].quality = items[i].quality + 1
-                    }
+            // Finally we update the item according to its type
+            with(items[i].name) {
+                when {
+                    contains("Aged Brie") -> updateAgedBrieQuality(i)
+                    contains("Backstage passes") -> updateBackstagePassesQuality(i)
+                    contains("Conjured") -> updateConjuredItem(i)
+                    else -> updateNormalItemQuality(i)
                 }
             }
         }
     }
 
-}
+    /**
+     * Update the quality of the Aged Brie item
+     */
+    private fun updateAgedBrieQuality(itemIndex: Int)
+    {
+        if (items[itemIndex].sellIn < 0) {
+            increaseItemQuality(itemIndex)
+        }
+        increaseItemQuality(itemIndex)
+    }
 
+    /**
+     * Update the quality of the Backstage passes items
+     */
+    private fun updateBackstagePassesQuality(itemIndex: Int)
+    {
+        if(items[itemIndex].sellIn < 0) {
+            items[itemIndex].quality = 0
+            return
+        }
+        increaseItemQuality(itemIndex)
+        if (items[itemIndex].sellIn < 11) increaseItemQuality(itemIndex)
+        if (items[itemIndex].sellIn < 6) increaseItemQuality(itemIndex)
+    }
+
+    /**
+     * Update the quality of the normals items
+     */
+    private fun updateNormalItemQuality(itemIndex: Int)
+    {
+        if (items[itemIndex].sellIn < 0) {
+            decreaseItemQuality(itemIndex)
+        }
+        decreaseItemQuality(itemIndex)
+    }
+
+    /**
+     * Update the quality of the conjured item
+     */
+    private fun updateConjuredItem(itemIndex: Int)
+    {
+        decreaseItemQuality(itemIndex)
+        decreaseItemQuality(itemIndex)
+        if(items[itemIndex].sellIn < 0)
+        {
+            decreaseItemQuality(itemIndex)
+            decreaseItemQuality(itemIndex)
+        }
+    }
+
+    /**
+     * Increment item's quality by 1
+     */
+    private fun increaseItemQuality(itemIndex: Int) { if(items[itemIndex].quality < 50) items[itemIndex].quality ++ }
+
+    /**
+     * Decrement item's quality by 1
+     */
+    private fun decreaseItemQuality(itemIndex: Int) { if(items[itemIndex].quality > 0)  items[itemIndex].quality -- }
+
+    /**
+     * Decrement the SellIn of the item by 1
+     */
+    private fun decreaseItemSellIn(itemIndex: Int) { items[itemIndex].sellIn -- }
+}
