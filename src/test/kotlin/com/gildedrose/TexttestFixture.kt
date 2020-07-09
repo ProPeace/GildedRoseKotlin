@@ -17,7 +17,7 @@ fun main(args: Array<String>) {
 
     val app = GildedRose(items)
 
-    var days = 2
+    var days = 5 // We can change this value to test on more days
     if (args.size > 0) {
         days = Integer.parseInt(args[0]) + 1
     }

@@ -2,18 +2,25 @@ package com.gildedrose
 
 class GildedRose(var items: Array<Item>) {
 
+    /**
+     * Update the quality of a list of items according to their type
+     */
     fun updateQuality() {
-        loop@ for (i in items.indices) {
+        for (i in items.indices) {
             // We start by dealing the case Sulfuras, which sellIn and quality will never change
             if (items[i].name == "Sulfuras, Hand of Ragnaros") continue
 
             // Then we can decrement the sellIn
             decreaseItemSellIn(i)
 
-            when (items[i].name) {
-                "Aged Brie" -> updateAgedBrieQuality(i)
-                "Backstage passes to a TAFKAL80ETC concert" -> updateBackstagePassesQuality(i)
-                else -> updateNormalItemQuality(i)
+            // Finally we update the item according to its type
+            with(items[i].name) {
+                when {
+                    contains("Aged Brie") -> updateAgedBrieQuality(i)
+                    contains("Backstage passes") -> updateBackstagePassesQuality(i)
+                    contains("Conjured") -> updateConjuredItem(i)
+                    else -> updateNormalItemQuality(i)
+                }
             }
         }
     }
@@ -44,7 +51,7 @@ class GildedRose(var items: Array<Item>) {
     }
 
     /**
-     * Update the quality of the normals item
+     * Update the quality of the normals items
      */
     private fun updateNormalItemQuality(itemIndex: Int)
     {
@@ -52,6 +59,20 @@ class GildedRose(var items: Array<Item>) {
             decreaseItemQuality(itemIndex)
         }
         decreaseItemQuality(itemIndex)
+    }
+
+    /**
+     * Update the quality of the conjured item
+     */
+    private fun updateConjuredItem(itemIndex: Int)
+    {
+        decreaseItemQuality(itemIndex)
+        decreaseItemQuality(itemIndex)
+        if(items[itemIndex].sellIn < 0)
+        {
+            decreaseItemQuality(itemIndex)
+            decreaseItemQuality(itemIndex)
+        }
     }
 
     /**

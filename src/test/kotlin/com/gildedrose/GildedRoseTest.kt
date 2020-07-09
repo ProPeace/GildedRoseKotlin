@@ -5,17 +5,6 @@ import org.junit.Test
 
 class GildedRoseTest {
 
-    private val items = arrayOf(Item("+5 Dexterity Vest", 10, 20), //
-    Item("Aged Brie", 2, 0), //
-    Item("Elixir of the Mongoose", 5, 7), //
-    Item("Sulfuras, Hand of Ragnaros", 0, 80), //
-    Item("Sulfuras, Hand of Ragnaros", -1, 80),
-    Item("Backstage passes to a TAFKAL80ETC concert", 15, 20),
-    Item("Backstage passes to a TAFKAL80ETC concert", 10, 49),
-    Item("Backstage passes to a TAFKAL80ETC concert", 5, 49),
-    // this conjured item does not work properly yet
-    Item("Conjured Mana Cake", 3, 6))
-
     /**
      * Create an object GildedRose of a list of items add apply updateQuality
      * @param items : the list of items to update
@@ -89,9 +78,11 @@ class GildedRoseTest {
     @Test fun nonNegativeUpdate()
     {
         val items = arrayOf(Item("+5 Dexterity Vest",10,0),
-                            Item("+5 Dexterity Vest",5,1))
+                            Item("+5 Dexterity Vest",5,1),
+                            Item("Conjured Mana Cake", 0, 2))
         val negativeItems = arrayOf(Item("+5 Dexterity Vest",9,0),
-                                    Item("+5 Dexterity Vest",4,0))
+                                    Item("+5 Dexterity Vest",4,0),
+                                    Item("Conjured Mana Cake", -1, 0))
 
         updateItems(items)
         assertEquals(negativeItems.contentToString(), items.contentToString())
@@ -121,6 +112,20 @@ class GildedRoseTest {
                             Item("Aged Brie", 0, 2))
         val expectedItems = arrayOf(Item("+5 Dexterity Vest",-1,18),
                                     Item("Aged Brie", -1, 4))
+
+        updateItems(items)
+        assertEquals(expectedItems.contentToString(), items.contentToString())
+    }
+
+    /**
+     * Execute a test on the item "Conjured"
+     */
+    @Test fun conjuredItemUpdate()
+    {
+        val items = arrayOf(Item("Conjured Mana Cake", 3, 6),
+                Item("Conjured Mana Cake", 0, 6))
+        val expectedItems = arrayOf(Item("Conjured Mana Cake", 2, 4),
+                Item("Conjured Mana Cake", -1, 2))
 
         updateItems(items)
         assertEquals(expectedItems.contentToString(), items.contentToString())
